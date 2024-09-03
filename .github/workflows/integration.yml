@@ -1,0 +1,47 @@
+name: Attestation Integration Test
+
+on:
+  workflow_dispatch:
+  schedule:
+    # run every 5 minutes, as often as Github Actions allows
+    - cron:  '*/5 * * * *'
+
+jobs:
+  attest:
+    name: Attest/Verify Artifact
+    runs-on: ubuntu-latest
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: hmarr/debug-action@v2
+      - name: Request OIDC Token
+        run: |
+          curl "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=nobody" \
+            -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            -H "Accept: application/json; api-version=2.0" \
+            -H "Content-Type: application/json" \
+            --silent | jq -r '.value' | jq -R 'split(".") | .[0],.[1] | @base64d | fromjson'
+
+      - name: Create artifact
+        run: |
+          date > artifact
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: artifact
+
+      - name: Verify build artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh attestation verify ./artifact --owner "$GITHUB_REPOSITORY_OWNER"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: "artifact"
+
