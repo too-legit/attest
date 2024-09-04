@@ -2,9 +2,6 @@ name: Attestation Integration Test
 
 on:
   workflow_dispatch:
-  schedule:
-    # run every 5 minutes, as often as Github Actions allows
-    - cron:  '*/5 * * * *'
 
 jobs:
   attest:
@@ -30,7 +27,7 @@ jobs:
           date > artifact
 
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@bdehamer/slug
         with:
           subject-path: artifact
 
