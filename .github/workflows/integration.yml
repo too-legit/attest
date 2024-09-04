@@ -28,6 +28,8 @@ jobs:
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@bdehamer/slug
+        env:
+          INPUT_PRIVATE-SIGNING: "true"
         with:
           subject-path: artifact
 
