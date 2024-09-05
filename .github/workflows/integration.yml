@@ -27,7 +27,7 @@ jobs:
           date > artifact
 
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@bdehamer/slug
+        uses: actions/attest-build-provenance@main
         env:
           INPUT_PRIVATE-SIGNING: "true"
         with:
