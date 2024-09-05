@@ -12,7 +12,7 @@ const initBundleBuilder = () => {
 
   const signer = new FulcioSigner({
     identityProvider,
-    fulcioBaseURL: 'https://fulcio-staging.githubapp.com'
+    fulcioBaseURL: 'https://fulcio.githubapp.com'
   })
 
   const witnesses = [
