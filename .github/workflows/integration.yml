@@ -24,7 +24,7 @@ jobs:
 
       - name: Create artifact
         run: |
-          date > artifact
+          dd if=/dev/urandom of=artifact bs=1 count=1024
 
       - name: Attest build provenance
         uses: actions/attest-build-provenance@main
