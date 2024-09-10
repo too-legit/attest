@@ -29,7 +29,7 @@ jobs:
       - name: Attest build provenance
         uses: actions/attest-build-provenance@main
         env:
-          INPUT_PRIVATE-SIGNING: "true"
+          INPUT_PRIVATE-SIGNING: "false"
         with:
           subject-path: artifact
 
